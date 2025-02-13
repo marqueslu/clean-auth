@@ -1,0 +1,67 @@
+name: Pipiline CI/CD
+run-name: Pipeline CI/CD executada por ${{ github.actor }} em ${{ github.run_number }}
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4  
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x    
+    - working-directory: .
+      run: dotnet build my-money.sln
+
+  tests:
+    name: Tests
+    needs: [build]
+    runs-on: ubuntu-latest
+    permissions:      
+      contents: read
+      checks: write
+      security-events: write
+      actions: read
+
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password_e2e
+          POSTGRES_DB: MyMoneye2e
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+                    
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --no-restore          
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Report Tests
+        path: "**/test-results.trx"
+        reporter: dotnet-trx
+        fail-on-error: true
