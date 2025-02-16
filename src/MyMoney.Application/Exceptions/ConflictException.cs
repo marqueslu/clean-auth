@@ -1,10 +1,7 @@
 namespace MyMoney.Application.Exceptions;
 
-public class ConflictException : ApplicationException
+public class ConflictException(string message) : ApplicationException(message)
 {
-    public ConflictException(string message)
-        : base(message) { }
-
     public static void ThrowIfNotNull(object? @object, string exceptionMessage)
     {
         if (@object is not null)
