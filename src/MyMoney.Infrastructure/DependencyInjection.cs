@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 using MyMoney.Application.Intefaces;
 using MyMoney.Domain.Interfaces.Security;
 using MyMoney.Domain.Repository;
@@ -64,12 +63,15 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddJwtAuthentication(this IServiceCollection
-        services, IConfiguration configuration)
+    private static IServiceCollection AddJwtAuthentication(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.Section));
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
-        services.ConfigureOptions<JwtBearerTokenValidationConfiguration>()
+        services
+            .ConfigureOptions<JwtBearerTokenValidationConfiguration>()
             .AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
 
@@ -79,7 +81,8 @@ public static class DependencyInjection
     public static WebApplication MigrateDatabase(this WebApplication app)
     {
         var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-        if (environment == "e2e") return app;
+        if (environment == "e2e")
+            return app;
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         dbContext.Database.Migrate();
