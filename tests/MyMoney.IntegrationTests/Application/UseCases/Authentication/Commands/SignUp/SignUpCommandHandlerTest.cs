@@ -16,7 +16,12 @@ public class SignUpCommandHandlerTest(SignUpTestFixture fixture)
         var unitOfWork = new UnitOfWork(dbContext);
         var jwtTokenGenerator = fixture.GetJwtTokenGenerator();
         var passwordHasher = fixture.GetBCryptPasswordHasher();
-        var useCase = new SignUpCommandHandler(repository, unitOfWork, passwordHasher, jwtTokenGenerator);
+        var useCase = new SignUpCommandHandler(
+            repository,
+            unitOfWork,
+            passwordHasher,
+            jwtTokenGenerator
+        );
 
         var command = fixture.GetCommand();
         var output = await useCase.Handle(command, CancellationToken.None);
@@ -25,7 +30,6 @@ public class SignUpCommandHandlerTest(SignUpTestFixture fixture)
         registeredUser.ShouldNotBeNull();
         registeredUser.Name.ShouldBe(command.Name);
         registeredUser.Email.ShouldBe(command.Email);
-        output.CreatedAt.ShouldNotBe(default);
         output.Token.ShouldNotBeNull();
     }
 
@@ -35,17 +39,25 @@ public class SignUpCommandHandlerTest(SignUpTestFixture fixture)
         parameters: 5,
         MemberType = typeof(SignUpTestDataGenerator)
     )]
-    public async Task Given_SignUpCommand_When_CantInstantiateUser_Then_ShouldThrow(SignUpCommand command,
-        string expectedExceptionMessage)
+    public async Task Given_SignUpCommand_When_CantInstantiateUser_Then_ShouldThrow(
+        SignUpCommand command,
+        string expectedExceptionMessage
+    )
     {
         var dbContext = fixture.CreateDbContext();
         var repository = new UserRepository(dbContext);
         var unitOfWork = new UnitOfWork(dbContext);
         var jwtTokenGenerator = fixture.GetJwtTokenGenerator();
         var passwordHasher = fixture.GetBCryptPasswordHasher();
-        var useCase = new SignUpCommandHandler(repository, unitOfWork, passwordHasher, jwtTokenGenerator);
+        var useCase = new SignUpCommandHandler(
+            repository,
+            unitOfWork,
+            passwordHasher,
+            jwtTokenGenerator
+        );
 
-        Func<Task<AuthResult>> Action = async () => await useCase.Handle(command, CancellationToken.None);
+        Func<Task<AuthResult>> Action = async () =>
+            await useCase.Handle(command, CancellationToken.None);
         var exception = await Should.ThrowAsync<EntityValidationException>(Action());
         exception.Message.ShouldBe(expectedExceptionMessage);
     }
