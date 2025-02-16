@@ -5,11 +5,13 @@ namespace MyMoney.IntegrationTests.Application.UseCases.Authentication.Common;
 
 public class AuthenticationUseCasesBaseFixture : BaseFixture
 {
-    public User GetValidUser()
-        => new(GetValidUserName(),
+    public User GetValidUser(string? password = null) =>
+        new(
+            GetValidUserName(),
             GetValidUserEmail(),
-            GetValidUserPassword(),
-            GetBCryptPasswordHasher());
+            password is not null ? password : GetValidUserPassword(),
+            GetBCryptPasswordHasher()
+        );
 
     public string GetValidUserName()
     {

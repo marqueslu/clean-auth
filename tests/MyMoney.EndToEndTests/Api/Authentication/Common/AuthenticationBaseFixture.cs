@@ -13,6 +13,11 @@ public class AuthenticationBaseFixture : BaseFixture<IAuthenticationApiClient>
         Persistence = new AuthenticationPersistence(CreateDbContext());
     }
 
+    public string GetValidUserPassword()
+    {
+        return Faker.Internet.Password(8);
+    }
+
     protected string GetValidUserName()
     {
         var userName = Faker.Person.FullName;
@@ -29,11 +34,6 @@ public class AuthenticationBaseFixture : BaseFixture<IAuthenticationApiClient>
         return Faker.Person.Email;
     }
 
-    protected string GetValidUserPassword()
-    {
-        return Faker.Internet.Password(8);
-    }
-
-    public User GetValidUserFromCommand(string name, string email, string password)
-        => new(name, email, password, GetBCryptPasswordHasher());
+    public User GetValidUserFromCommand(string name, string email, string password) =>
+        new(name, email, password, GetBCryptPasswordHasher());
 }
