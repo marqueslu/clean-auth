@@ -22,4 +22,39 @@ public class UserRepositoryTest(UserRepositoryTestFixture fixture)
         savedDbUser.Password.ShouldBe(exampleUser.Password);
         savedDbUser.CreatedAt.ShouldBe(exampleUser.CreatedAt);
     }
+
+    [Fact]
+    public async Task Given_UserRepository_When_FindByEmailAndUserExists_Then_ShouldReturnUser()
+    {
+        var dbContext = fixture.CreateDbContext();
+        var exampleUser = fixture.GetValidUser();
+
+        await dbContext.AddAsync(exampleUser, CancellationToken.None);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+
+        var userRepository = new UserRepository(fixture.CreateDbContext(true));
+        var output = await userRepository.FindByEmailAsync(
+            exampleUser.Email,
+            CancellationToken.None
+        );
+
+        output!.Name.ShouldBe(exampleUser.Name);
+        output.Email.ShouldBe(exampleUser.Email);
+        output.Password.ShouldBe(exampleUser.Password);
+        output.CreatedAt.ShouldBe(exampleUser.CreatedAt);
+    }
+
+    [Fact]
+    public async Task Given_UserRepository_When_FindByEmailAndUserNotsExists_Then_ShouldNotReturn()
+    {
+        var exampleUser = fixture.GetValidUser();
+        var dbContext = fixture.CreateDbContext();
+        var userRepository = new UserRepository(dbContext);
+        var output = await userRepository.FindByEmailAsync(
+            exampleUser.Email,
+            CancellationToken.None
+        );
+
+        output.ShouldBeNull();
+    }
 }
