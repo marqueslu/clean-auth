@@ -1,4 +1,3 @@
-using MyMoney.Application.UseCases.Authentication.Commands.SignUp;
 using MyMoney.Application.UseCases.Authentication.Queries.SignIn;
 using MyMoney.Domain.Entities;
 using MyMoney.e2eTests.Api.Authentication.Common;
