@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-
 using MyMoney.Application.Common.Behaviors.Validation;
 using MyMoney.Application.Exceptions;
 
@@ -35,6 +34,20 @@ public class ApiGlobalExceptionFilter : IExceptionFilter
             details.Detail = exception!.Message;
         }
         else if (exception is ValidationException)
+        {
+            details.Title = "Validation";
+            details.Status = StatusCodes.Status422UnprocessableEntity;
+            details.Type = "UnprocessableEntity";
+            details.Detail = exception!.Message;
+        }
+        else if (exception is NotFoundException)
+        {
+            details.Title = "Not Nofund";
+            details.Status = StatusCodes.Status404NotFound;
+            details.Type = "NotFound";
+            details.Detail = exception!.Message;
+        }
+        else if (exception is DivergentDataException)
         {
             details.Title = "Validation";
             details.Status = StatusCodes.Status422UnprocessableEntity;
