@@ -1,5 +1,4 @@
 using MyMoney.Application.Exceptions;
-using MyMoney.Application.UseCases.Authentication.Commands.SignUp;
 using MyMoney.Application.UseCases.Authentication.Common;
 using MyMoney.Application.UseCases.Authentication.Queries.SignIn;
 using MyMoney.Infrastructure.Repositories;
@@ -7,7 +6,7 @@ using MyMoney.Infrastructure.Repositories;
 namespace MyMoney.IntegrationTests.Application.UseCases.Authentication.Queries.SignIn;
 
 [Collection(nameof(SignInTestFixture))]
-public class SignUpCommandHandlerTest(SignInTestFixture fixture)
+public class SignInCommandHandlerTest(SignInTestFixture fixture)
 {
     [Fact]
     public async Task Given_SignInQuery_When_ExecuteHandlerWithCorrectData_Then_ShouldReturnUser()
