@@ -19,7 +19,7 @@ jobs:
       with:
         dotnet-version: 8.0.x    
     - working-directory: .
-      run: dotnet build my-money.sln
+      run: dotnet build clean-auth.sln
 
   tests:
     name: Tests
@@ -39,7 +39,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password_e2e
-          POSTGRES_DB: MyMoneye2e
+          POSTGRES_DB: CleanAuthe2e
     steps:
     - uses: actions/checkout@v4
     

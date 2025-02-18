@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   api:
-    container_name: my-money-api
+    container_name: clean-auth-api
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,7 +13,7 @@ services:
       db:
         condition: service_healthy
   db:
-    container_name: my-money-db
+    container_name: clean-auth-db
     image: postgres:latest
     ports:
       - "5432:5432"
@@ -21,7 +21,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d MyMoney"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d CleanAuth"]
       interval: 5s
       timeout: 5s
       retries: 5          

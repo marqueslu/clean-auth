@@ -1,5 +1,5 @@
-PROJECT_DIR=./src/MyMoney.Infrastructure
-STARTUP_PROJECT=./src/MyMoney.Api
+PROJECT_DIR=./src/CleanAuth.Infrastructure
+STARTUP_PROJECT=./src/CleanAuth.Api
 MIGRATION_NAME?=InitialStructure
 
 migrate-create:
