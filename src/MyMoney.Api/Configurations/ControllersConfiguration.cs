@@ -30,6 +30,16 @@ public static class ControllersConfiguration
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "My Money Api", Version = "v1" });
+            c.AddSecurityDefinition("Bearer",
+                new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header
+                });
+            c.OperationFilter<AuthorizeCheckOperationFilter>();
         });
 
         return services;
