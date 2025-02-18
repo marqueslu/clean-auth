@@ -7,7 +7,7 @@ namespace MyMoney.e2eTests.Api.Authentication.SignIn;
 public class SignInApiTest(SignInApiTestFixture fixture) : IDisposable
 {
     [Fact]
-    public async Task Given_SignIn_When_UserExists_Then_Shouldeturn()
+    public async Task Given_SignIn_When_UserExists_Then_ShouldReturns()
     {
         var password = fixture.GetValidUserPassword();
         var exampleUser = fixture.GetUser(password);
