@@ -2,7 +2,7 @@ using MyMoney.Application.Exceptions;
 using MyMoney.Application.Intefaces;
 using MyMoney.Application.UseCases.Authentication.Commands.SignUp;
 using MyMoney.Application.UseCases.Authentication.Common;
-using MyMoney.Domain.Entities;
+using DomainEntity = MyMoney.Domain.Entities;
 using MyMoney.Domain.Repository;
 
 namespace MyMoney.UnitTests.Application.UseCases.Authentication.Commands.SignUp;
@@ -312,7 +312,7 @@ public class SignUpCommandHandlerTest(SignUpCommandHandlerTestFixture fixture)
     {
         userRepositoryMock.Verify(
             x => x.CreateAsync(
-                It.IsAny<User>(),
+                It.IsAny<DomainEntity.User>(),
                 It.IsAny<CancellationToken>()),
             times);
     }

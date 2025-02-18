@@ -1,6 +1,7 @@
 using MyMoney.Application.Exceptions;
 using MyMoney.Application.Intefaces;
 using MyMoney.Application.UseCases.Authentication.Common;
+using MyMoney.Application.UseCases.Common;
 using MyMoney.Domain.Interfaces.Security;
 using MyMoney.Domain.Repository;
 
