@@ -27,8 +27,8 @@ public class TokenGeneratorTest
     public void Given_TokenGenerator_When_GenerateJWtToken_Then_ShouldCreateAValidToken()
     {
         var userId = Guid.NewGuid();
-        var userName = "John Doe";
-        var userEmail = "john@doe.com";
+        const string userName = "John Doe";
+        const string userEmail = "john@doe.com";
 
         var tokenGenerator = new JwtTokenGenerator(_options.Object);
 
@@ -43,6 +43,6 @@ public class TokenGeneratorTest
         var claims = jwtToken.Claims.ToList();
         claims.ShouldContain(c => c.Type == JwtRegisteredClaimNames.Name && c.Value == userName);
         claims.ShouldContain(c => c.Type == JwtRegisteredClaimNames.Email && c.Value == userEmail);
-        claims.ShouldContain(c => c.Type == "id" && c.Value == userId.ToString());
+        claims.ShouldContain(c => c.Type == "Id" && c.Value == userId.ToString());
     }
 }
