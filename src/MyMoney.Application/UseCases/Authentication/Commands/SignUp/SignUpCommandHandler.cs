@@ -1,7 +1,8 @@
 using MyMoney.Application.Exceptions;
 using MyMoney.Application.Intefaces;
 using MyMoney.Application.UseCases.Authentication.Common;
-using MyMoney.Domain.Entities;
+using MyMoney.Application.UseCases.Common;
+using DomainEntity = MyMoney.Domain.Entities;
 using MyMoney.Domain.Interfaces.Security;
 using MyMoney.Domain.Repository;
 
@@ -21,7 +22,7 @@ public class SignUpCommandHandler(
     {
         var userExists = await userRepository.FindByEmailAsync(request.Email, cancellationToken);
         ConflictException.ThrowIfNotNull(userExists, "User already exists.");
-        var user = new User(request.Name, request.Email, request.Password, passwordHasher);
+        var user = new DomainEntity.User(request.Name, request.Email, request.Password, passwordHasher);
         await userRepository.CreateAsync(user, cancellationToken);
         await unitOfWork.CommitAsync(cancellationToken);
         var token = jwtTokenGenerator.GenerateToken(user.Id, user.Name, user.Email);
