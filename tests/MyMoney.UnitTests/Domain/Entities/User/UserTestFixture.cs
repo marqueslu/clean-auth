@@ -1,5 +1,4 @@
-using MyMoney.Domain.Interfaces.Security;
-using MyMoney.UnitTests.Common;
+using MyMoney.UnitTests.Common.User;
 
 namespace MyMoney.UnitTests.Domain.Entities.User;
 
@@ -8,31 +7,6 @@ public class UserTestFixtureCollection : ICollectionFixture<UserTestFixture>
 {
 }
 
-public class UserTestFixture : BaseFixture
+public class UserTestFixture : UserBaseFixture
 {
-    public string GetValidUserName()
-    {
-        var userName = Faker.Person.FullName;
-        if (userName.Length > 100)
-        {
-            userName = userName[..100];
-        }
-
-        return userName;
-    }
-    
-    public string GetValidUserPassword()
-    {
-        return Faker.Internet.Password(8);
-    }
-
-    public Mock<IPasswordHasher> GetPasswordHasherMock() => new();
-
-    public (string, string, string) GetValidUserData() =>
-        (GetValidUserName(), GetValidUserEmail(), GetValidUserPassword());
-    
-    private string GetValidUserEmail()
-    {
-        return Faker.Person.Email;
-    }
 }
