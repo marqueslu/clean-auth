@@ -13,7 +13,7 @@ namespace MyMoney.e2eTests.Base;
 public class BaseFixture<T> : IDisposable
 {
     public T ApiClient { get; set; }
-    protected Faker Faker { get; private set; }
+    public Faker Faker { get; private set; }
     private CustomWebApplicationFactory WebApplicationFactory { get; set; }
     private HttpClient HttpClient { get; set; }
     private string _dbConnectionString;

@@ -1,4 +1,4 @@
-using MyMoney.Domain.Entities;
+using DomainEntity =  MyMoney.Domain.Entities;
 using MyMoney.e2eTests.Base;
 using MyMoney.e2eTests.Contracts;
 
@@ -34,6 +34,6 @@ public class AuthenticationBaseFixture : BaseFixture<IAuthenticationApiClient>
         return Faker.Person.Email;
     }
 
-    public User GetValidUserFromCommand(string name, string email, string password) =>
+    public DomainEntity.User GetValidUserFromCommand(string name, string email, string password) =>
         new(name, email, password, GetBCryptPasswordHasher());
 }
