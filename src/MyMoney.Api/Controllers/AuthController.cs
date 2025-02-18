@@ -1,6 +1,8 @@
 using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using MyMoney.Api.ApiModels.Response;
 using MyMoney.Application.UseCases.Authentication.Commands.SignUp;
 using MyMoney.Application.UseCases.Authentication.Common;
@@ -31,6 +33,7 @@ public class AuthController(IMediator mediator) : ApiController
     [ProducesResponseType(typeof(ApiResponse<AuthResult>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SignIn(
         [FromBody] SignInQuery request,
         CancellationToken cancellationToken
