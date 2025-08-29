@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: clean-auth-api-service
+  namespace: clean-auth
+  labels:
+    app: clean-auth-api
+spec:
+  type: NodePort
+  ports:
+  - port: 5001
+    targetPort: 5001
+    nodePort: 30001
+    protocol: TCP
+  selector:
+    app: clean-auth-api

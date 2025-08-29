@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clean-auth-api
+  namespace: clean-auth
+  labels:
+    app: clean-auth-api
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: clean-auth-api
+  template:
+    metadata:
+      labels:
+        app: clean-auth-api
+    spec:
+      containers:
+      - name: clean-auth-api
+        image: clean-auth-api:latest
+        imagePullPolicy: Never  # Use local image
+        ports:
+        - containerPort: 5001
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"
+        - name: ASPNETCORE_HTTP_PORTS
+          value: "5001"
+        - name: ConnectionStrings__CleanAuthDb
+          valueFrom:
+            secretKeyRef:
+              name: clean-auth-secrets
+              key: CONNECTION_STRING
+        - name: JWtSettings__Secret
+          valueFrom:
+            secretKeyRef:
+              name: clean-auth-secrets
+              key: JWT_SECRET
+        - name: JWtSettings__Issuer
+          value: "CleanAuthApi"
+        - name: JWtSettings__Audience
+          value: "CleanAuthApi"
+        - name: JWtSettings__TokenExpirationInMinutes
+          value: "60"
+        - name: BCryptPasswordHasherSettings__WorkFactor
+          value: "12"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5001
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5001
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 3
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      initContainers:
+      - name: wait-for-postgres
+        image: postgres:16
+        command: ['sh', '-c', 'until pg_isready -h postgres-service -p 5432; do echo waiting for postgres; sleep 2; done;']
