@@ -9,6 +9,7 @@ builder.Services.AddPresentation().AddApplication().AddInfrastructure(builder.Co
 
 builder.Services.AddHttpLogging(o => { });
 builder.Services.AddHealthChecks();
+builder.Services.AddTelemetry("CleanAuth.Api");
 
 var app = builder.Build();
 
