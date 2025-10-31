@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5001:5001"
-    env_file: ".env"   
+    env_file: ".env"
     depends_on:
       db:
         condition: service_healthy
@@ -24,7 +24,15 @@ services:
       test: ["CMD-SHELL", "pg_isready -U postgres -d CleanAuth"]
       interval: 5s
       timeout: 5s
-      retries: 5          
-    
+      retries: 5     
+
+  jaeger:
+    container_name: clean-auth-jaeger
+    image: jaegertracing/all-in-one:latest
+    ports:      
+      - 4317:4317
+      - 4318:4318
+      - 16686:16686
+   
 volumes:
   postgres_data:
